@@ -1,11 +1,43 @@
 {
-  "app_name": "Session Monk",
-  "points": "Points",
-  "dashboard_start_session": "Join session",
-  "session_info_attr_label": "",
-  "session_rating_name": "Strength",
-  "session_rating_hint": "tap to set the coffee strength",
-  "session_rating_option1": "low",
-  "session_rating_option2": "mild",
-  "session_rating_option3": "high"
+  "generic": {
+    "deviceBoxCaption": "Device"
+  },
+  "buttons": {
+    "startSessionButtonCaption": "START SESSION",
+    "disconnectButtonCaption": "DISCONNECT",
+    "endSessionButtonCaption": "END SESSION",
+    "okButtonCaption": "OK",
+    "startDeviceLookupButtonCaption": "START DEVICE LOOKUP",
+    "stopDeviceLookupButtonCaption": "STOP DEVICE LOOKUP"
+  },
+  "screens": {
+    "deviceMenu": {
+      "deviceMenuConnectingCaption": "Connecting...",
+      "deviceMenuNoneFoundYetCaption": "No Devices Found yet"
+    },
+    "sessionCtrl": {
+      "sessionCtrlIdealForCaptionGreenTea": "Ideal for Green Tea",
+      "sessionCtrlIdealForCaptionWhiteTea": "Ideal for White Tea",
+      "sessionCtrlIdealForCaptionBlackTea": "Ideal for Black Tea",
+      "sessionCtrlScreenCaptionSessionFinished": "Session Finished",
+      "sessionCtrlScreenCaptionSessionStarting": "Session Starting...",
+      "sessionCtrlScreenCaptionConnectionLost": "Connection to the Device Lost.",
+      "sessionCtrlTemperatureBoxCaption": "Temperature",
+      "sessionCtrlSessionTimeBoxCaption": "Session Time",
+      "targetTemperatureMin": 70,
+      "targetTemperatureMax": 100,
+      "maxGreenTea": 80,
+      "maxWhiteTea": 90
+    }
+  },
+  "errors": {
+    "connection": {
+      "errorTimeoutCaption": "Connection Timeout Error During Connection, Please Try Again. If the problem persists, please restart the Device and the Bluetooth Service on Your Phone.",
+      "errorPairingCaption": "Connection Error During Pairing, Please Try Again. If the problem persists, please restart the Device and the Bluetooth Service on Your Phone.",
+      "errorServiceNotFoundCaption": "Unable to Connect To the Device, Please Try Again. If the problem persists, please restart the Device and the Bluetooth Service on Your Phone.",
+      "errorNoServicesCaption": "Unable to Connect To the Device, Please Try Again. If the problem persists, please restart the Device and the Bluetooth Service on Your Phone.",
+      "errorConnectionGenericCaption": "Unable to Connect To the Device, Please Try Again. If the problem persists, please restart the Device and the Bluetooth Service on Your Phone.",
+      "errorBadStateCaption": "Unable to Connect To the Device - Bad Connection State, Please Try Again. If the problem persists, please restart the Device and the Bluetooth Service on Your Phone."
+    }
+  }
 }
