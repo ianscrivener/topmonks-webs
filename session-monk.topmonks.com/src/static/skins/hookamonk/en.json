@@ -11,23 +11,22 @@
     "stopDeviceLookupButtonCaption": "STOP DEVICE LOOKUP"
   },
   "screens": {
+    "lookupMenu": {
+      "btDevicePrefix": "hookamonk-"
+    },
     "deviceMenu": {
       "deviceMenuConnectingCaption": "Connecting...",
       "deviceMenuNoneFoundYetCaption": "No Devices Found yet"
     },
     "sessionCtrl": {
-      "sessionCtrlIdealForCaptionGreenTea": "Ideal for Green Tea",
-      "sessionCtrlIdealForCaptionWhiteTea": "Ideal for White Tea",
-      "sessionCtrlIdealForCaptionBlackTea": "Ideal for Black Tea",
+      "sessionCtrlIdealForCaptionGreenTea": "Ideal for Brown Tobaccos",
+      "sessionCtrlIdealForCaptionWhiteTea": "Ideal for Brown/Black Tobacco mixes",
+      "sessionCtrlIdealForCaptionBlackTea": "Ideal for Black Tobaccos",
       "sessionCtrlScreenCaptionSessionFinished": "Session Finished",
       "sessionCtrlScreenCaptionSessionStarting": "Session Starting...",
       "sessionCtrlScreenCaptionConnectionLost": "Connection to the Device Lost.",
       "sessionCtrlTemperatureBoxCaption": "Temperature",
-      "sessionCtrlSessionTimeBoxCaption": "Session Time",
-      "targetTemperatureMin": 70,
-      "targetTemperatureMax": 100,
-      "maxGreenTea": 80,
-      "maxWhiteTea": 90
+      "sessionCtrlSessionTimeBoxCaption": "Session Time"
     }
   },
   "errors": {
