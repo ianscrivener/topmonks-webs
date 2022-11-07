@@ -1724,5 +1724,28 @@
     "existing": false,
     "original_filename": "2022-10-04",
     "api_key": "389916164315219"
+  },
+  "posters/2022-11-01.jpg": {
+    "asset_id": "2e5482274c987f6bb19e8a5f4dfa64e7",
+    "public_id": "caffe.topmonks.cz/posters/2022-11-01",
+    "version": 1667858164,
+    "version_id": "9cae210ff97273a2dc7456aeaf35aa5e",
+    "signature": "c7d98e6e238c61ce16e028868b671cadb6b83c97",
+    "width": 2400,
+    "height": 1350,
+    "format": "jpg",
+    "resource_type": "image",
+    "created_at": "2022-11-07T21:56:04Z",
+    "tags": [],
+    "bytes": 733483,
+    "type": "upload",
+    "etag": "f8ab14ea5dbcfb524e5c0ea9dedfdea9",
+    "placeholder": false,
+    "url": "http://res.cloudinary.com/topmonks/image/upload/v1667858164/caffe.topmonks.cz/posters/2022-11-01.jpg",
+    "secure_url": "https://res.cloudinary.com/topmonks/image/upload/v1667858164/caffe.topmonks.cz/posters/2022-11-01.jpg",
+    "folder": "caffe.topmonks.cz/posters",
+    "existing": false,
+    "original_filename": "2022-11-01",
+    "api_key": "389916164315219"
   }
 }
