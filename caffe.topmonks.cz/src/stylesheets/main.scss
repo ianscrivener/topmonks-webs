@@ -42,9 +42,11 @@ section {
   }
 }
 
-img.responsive {
+img {
+  aspect-ratio: auto;
   width: 100%;
   height: auto;
+  object-fit: cover;
 }
 
 .screen-reader-shortcut {
