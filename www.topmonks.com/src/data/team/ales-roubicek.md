@@ -5,7 +5,6 @@ surname: Roubíček
 job_title: Hacking Monkey
 twitter: alesroubicek
 github: rarous
-linkedin: in/rarous
 quote: Not everything is awesome.
 consultant: true
 pickup: true
