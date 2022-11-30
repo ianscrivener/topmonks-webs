@@ -8,7 +8,7 @@ github: jirkapenzes
 linkedin: in/jirkapenzes
 quote: Simplicity is the way.
 consultant: true
-
+pickup: true
 ---
 
 Any code is not the problem. I'm monk with open mind!

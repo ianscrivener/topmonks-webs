@@ -30,16 +30,16 @@
 
   "images": {
     "src": "images",
-    "dest": "images"
+    "dest": "assets/img"
   },
 
   "fonts": {
     "src": "fonts",
-    "dest": "fonts"
+    "dest": "assets/css"
   },
 
   "icons": {
     "src": "icons",
-    "dest": "images"
+    "dest": "assets/img"
   }
 }

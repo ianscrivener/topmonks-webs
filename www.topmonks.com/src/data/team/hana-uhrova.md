@@ -6,6 +6,6 @@ job_title: Happy Maker
 github: HankaU
 quote: Let's make it nice!
 consultant: false
-pickup: false
+pickup: true
 ---
 
