@@ -11,15 +11,15 @@
                     {{ imageUrl | cloudinaryUrl(dpr=1.5,width=344) }} 1.5x,
                     {{ imageUrl | cloudinaryUrl(dpr=2,width=344) }} 2x">
     <source media="screen and (min-width: 840px) and (max-width: 939px)"
-            srcset="{{ imageUrl | cloudinaryUrl(dpr=1,width=230) }} 1x,
-                    {{ imageUrl | cloudinaryUrl(dpr=1.5,width=230) }} 1.5x,
-                    {{ imageUrl | cloudinaryUrl(dpr=2,width=230) }} 2x">
-    <source media="screen and (min-width: 940px)"
             srcset="{{ imageUrl | cloudinaryUrl(dpr=1,width=280) }} 1x,
                     {{ imageUrl | cloudinaryUrl(dpr=1.5,width=280) }} 1.5x,
                     {{ imageUrl | cloudinaryUrl(dpr=2,width=280) }} 2x">
+    <source media="screen and (min-width: 940px)"
+            srcset="{{ imageUrl | cloudinaryUrl(dpr=1,width=350) }} 1x,
+                    {{ imageUrl | cloudinaryUrl(dpr=1.5,width=350) }} 1.5x,
+                    {{ imageUrl | cloudinaryUrl(dpr=2,width=350) }} 2x">
     <img alt="TopMonks Caffè - {{ eventData.title }}"
-         loading="lazy" width="280" height="197" class="responsive"
+         loading="lazy" width="350" height="197" class="responsive"
          src="{{ imageUrl | cloudinaryUrl(dpr="auto",width=350) }}">
   </picture>
 {%- endmacro %}
