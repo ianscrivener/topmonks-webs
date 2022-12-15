@@ -1871,6 +1871,10 @@ a {
   padding-bottom: 60px;
 }
 
+.success-message {
+  background-color: #0daf46;
+}
+
 @media screen and (max-width: 991px) {
   h2 {
     font-size: 34px;
