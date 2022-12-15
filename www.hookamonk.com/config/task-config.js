@@ -2,18 +2,16 @@ const pathConfig = require("./path-config.json");
 const createSharedTaskConfig = require("../../shared/config/createSharedTaskConfig");
 
 const config = createSharedTaskConfig(__dirname, {
-  images: true,
-  cloudinary: true,
+  images: false,
+  cloudinary: false,
   javascripts: false,
   fonts: false,
   static: true,
-  svgSprite: true,
-  stylesheets: true,
+  svgSprite: false,
+  stylesheets: false,
   workboxBuild: false,
 
-  html: {
-    collections: []
-  },
+  html: false,
 
   browserSync: {
     server: {
@@ -22,7 +20,7 @@ const config = createSharedTaskConfig(__dirname, {
   },
 
   production: {
-    rev: true
+    rev: false
   }
 });
 
