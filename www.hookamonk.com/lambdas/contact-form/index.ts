@@ -10,25 +10,21 @@ export const hookamonkContactFormLambda = new aws.lambda.CallbackFunction(
       let body;
       if (event.body !== null && event.body !== undefined) {
         if (event.isBase64Encoded) {
-          body = JSON.parse(Buffer.from(event.body, 'base64').toString('utf8'));
+          body = JSON.parse(Buffer.from(event.body, "base64").toString("utf8"));
         }
       } else {
         body = JSON.parse(event.body);
       }
 
-      const message = `Ahoj,
-
-      Máme tu zájemce z webu. Do formuláře zadal následující informace:
-
-      Má zájem o produkt: ${body.productName}
-      Jméno: ${body.name}
-      Email: ${body.email}
-      Telefon: ${body.telephone}
-      Zpráva od příjemce: ${body.message}`;
+      const message = `New newsletter subscriber: ${body.email}`;
 
       const ses = new aws.sdk.SES({ region: "eu-west-1" });
 
-      const receivers = ["sales@hookamonk.com", "vaclav.slavik@topmonks.com"];
+      const receivers = [
+        "sales@hookamonk.com",
+        "pavel.trnka@topmonks.com",
+        "jakub.dusek@topmonks.com"
+      ];
       const sender = "sales@hookamonk.com";
       await ses
         .sendEmail({
@@ -44,22 +40,11 @@ export const hookamonkContactFormLambda = new aws.lambda.CallbackFunction(
               }
             },
             Subject: {
-              Data: `Hookamonk.com Contact Form: "${body.name}"`,
+              Data: `Hookamonk.com Newsletter Form"`,
               Charset: "UTF-8"
             }
           },
           Source: sender
-        })
-        .promise();
-
-      await ses
-        .sendTemplatedEmail({
-          Template: "Hookamonk-contact-form-user-notification",
-          Destination: {
-            ToAddresses: [body.email]
-          },
-          Source: sender,
-          TemplateData: `{\"productName\": \"${body.productName}\", \"productUrl\": \"${body.productUrl}\"}`
         })
         .promise();
 

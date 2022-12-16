@@ -44,10 +44,11 @@ const withShared = function (dirname, config) {
         const { task, watch, series } = gulp;
 
         task("shared:watch", cb => {
-          watch(
-            path.resolve(dirname, "../../shared/src", "**/*.{css,scss}"),
-            series("stylesheets")
-          );
+          if (task.stylesheets)
+            watch(
+              path.resolve(dirname, "../../shared/src", "**/*.{css,scss}"),
+              series("stylesheets")
+            );
           watch(
             path.resolve(dirname, "../../shared/src", "**/*.{html,njk,json}"),
             series("html")
