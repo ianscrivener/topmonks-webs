@@ -3,6 +3,7 @@
 echo "Deploying site $1";
 
 export AWS_PROFILE=topmonks;
+pulumi login s3://pulumi.tmcloud.io;
 pulumi stack select topmonks-webs;
 
 distribution_id=$(pulumi stack output sites | jq -rM  '.["'"$1"'"] | .cloudFrontId | @text');
