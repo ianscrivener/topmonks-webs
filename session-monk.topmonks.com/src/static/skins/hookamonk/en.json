@@ -19,8 +19,8 @@
       "deviceMenuNoneFoundYetCaption": "No Devices Found yet"
     },
     "sessionCtrl": {
-      "sessionCtrlIdealForCaptionGreenTea": "Ideal for Brown Tobaccos",
-      "sessionCtrlIdealForCaptionWhiteTea": "Ideal for Brown/Black Tobacco mixes",
+      "sessionCtrlIdealForCaptionGreenTea": "Ideal for Blond Tobaccos",
+      "sessionCtrlIdealForCaptionWhiteTea": "Ideal for Blond/Black Tobacco mixes",
       "sessionCtrlIdealForCaptionBlackTea": "Ideal for Black Tobaccos",
       "sessionCtrlScreenCaptionSessionFinished": "Session Finished",
       "sessionCtrlScreenCaptionSessionStarting": "Session Starting...",
