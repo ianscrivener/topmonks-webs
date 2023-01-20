@@ -112,9 +112,9 @@ jobs:
       tag: 'current'
     working_directory: ~/topmonks-webs
     steps:
+      - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - checkout
       - attach_workspace:
           at: ~/topmonks-webs
       - node/install-packages:
