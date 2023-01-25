@@ -20,8 +20,8 @@
     },
     "sessionCtrl": {
       "sessionCtrlIdealForCaptionGreenTea": "Ideal for Blond Tobaccos",
-      "sessionCtrlIdealForCaptionWhiteTea": "Ideal for Blond/Black Tobacco mixes",
-      "sessionCtrlIdealForCaptionBlackTea": "Ideal for Black Tobaccos",
+      "sessionCtrlIdealForCaptionWhiteTea": "Ideal for Blond/Dark Tobacco mixes",
+      "sessionCtrlIdealForCaptionBlackTea": "Ideal for Dark Tobaccos",
       "sessionCtrlScreenCaptionSessionFinished": "Session Finished",
       "sessionCtrlScreenCaptionSessionStarting": "Session Starting...",
       "sessionCtrlScreenCaptionConnectionLost": "Connection to the Device Lost.",
