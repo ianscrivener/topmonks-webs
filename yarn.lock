@@ -2449,7 +2449,7 @@ __metadata:
     "@types/node": ^16.11.47
     ava: ^3.15.0
     browserslist: ^4.21.3
-    caniuse-lite: ^1.0.30001375
+    caniuse-lite: ^1.0.30001457
     chalk: ^4.1.2
     cheerio: ^1.0.0-rc.12
     commander: ^8.3.0

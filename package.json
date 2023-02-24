@@ -34,7 +34,7 @@
     "@topmonks/blendid": "https://github.com/topmonks/blendid.git#commit=1b604e5c3808ffe01a7986479f9516737d57248c",
     "ava": "^3.15.0",
     "browserslist": "^4.21.3",
-    "caniuse-lite": "^1.0.30001375",
+    "caniuse-lite": "^1.0.30001457",
     "chalk": "^4.1.2",
     "commander": "^8.3.0",
     "dotenv": "^10.0.0",
