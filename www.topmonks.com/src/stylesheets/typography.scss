@@ -40,6 +40,7 @@ body {
 }
 
 h1,
+
 h2 {
   font-size: 1.75em;
   line-height: 1.214em;
@@ -62,6 +63,13 @@ h4 {
   font-size: 1em;
   margin-bottom: 0.25em;
 }
+
+h5 {
+  font-size: 0.7em;
+  margin-top: 0px;
+  text-align: center;
+}
+
 
 p {
   margin: 0 0 1em;
@@ -103,14 +111,17 @@ ul.formatted {
   body {
     font-size: 1.125em;
   }
+
   h1,
   h2 {
     font-size: 2.111em;
     line-height: 1.447em;
   }
+
   h3 {
     font-size: 1.333em;
   }
+
   h4 {
     font-size: 20px;
   }
