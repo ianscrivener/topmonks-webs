@@ -1,0 +1,204 @@
+<!doctype html>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Visualizer</title>
+<style>
+    :root {
+        --background-color: #000;
+        --text-color: #fff;
+        --primary-color: #71E6B7;
+        --secondary-color: #502CCC;
+
+        --text-font: "Sixtyfour", sans-serif;
+    }
+
+    body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        font-family: var(--text-font);
+    }
+
+    #logger {
+        font: 40px Iosevka, monospace;
+    }
+
+    #canvas {
+        width: calc(100vw - 16px);
+        height: auto;
+    }
+</style>
+<pre id="logger">Hello OBS!</pre>
+<canvas id="canvas" width=1280 height=720></canvas>
+<script type="module">
+    var query = new URLSearchParams(location.search);
+
+    if (query.has("debug")) {
+      var logger = document.getElementById("logger");
+      if (!navigator.mediaDevices) {
+        logger.textContent = "No mediaDevices support";
+      } else {
+        var sources = await navigator.mediaDevices.enumerateDevices();
+        logger.textContent = sources
+                .filter(x => x.kind === "audioinput")
+                .map(x => `${x.label}: ${x.deviceId}`)
+                .join("\n")
+      }
+    } else {
+      var title = query.get("title") ?? "MONKSROOM";
+
+      setStyles(document.body.style, query);
+
+      var canvas = document.getElementById("canvas");
+      var canvasCtx = canvas.getContext("2d", {antialias: true});
+      canvasCtx.globalCompositeOperation = "source-over";
+      canvasCtx.textAlign = "center";
+      canvasCtx.textBaseline = "middle";
+      canvasCtx.textRendering = "optimizeSpeed";
+      canvasCtx.fontKerning = "normal";
+
+      var stream = await navigator.mediaDevices.getUserMedia({audio: true});
+      var audioCtx = new AudioContext();
+      var mic = audioCtx.createMediaStreamSource(stream);
+
+      var analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+
+      mic.connect(analyser);
+
+      var filterAnalyser = audioCtx.createAnalyser();
+      filterAnalyser.smoothingTimeConstant = 0;
+      var filter = audioCtx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(80, audioCtx.currentTime);
+
+      mic.connect(filter);
+      filter.connect(filterAnalyser);
+
+      var canvasStyle = getComputedStyle(canvas);
+
+      var bgColor = canvasStyle.getPropertyValue("--background-color");
+      var textColor = canvasStyle.getPropertyValue("--text-color");
+      var textFont = canvasStyle.getPropertyValue("--text-font");
+      var color1 = canvasStyle.getPropertyValue("--primary-color");
+      var color2 = canvasStyle.getPropertyValue("--secondary-color");
+
+      var sum = (a, b) => a + b;
+
+      /**
+      * @param {CanvasRenderingContext2D} ctx
+      * @param {string|CanvasGradient|CanvasPattern} style
+      * @param rect
+      */
+      function drawRect(ctx, style, {x, y, w, h}) {
+        ctx.fillStyle = style;
+        ctx.fillRect(x, y, w, h);
+      }
+
+      /**
+      * @param {CanvasRenderingContext2D} ctx
+      * @param signal
+      */
+      function drawBackground(ctx, {canvas}) {
+        drawRect(ctx, bgColor, {x: 0, y: 0, w: canvas.width, h: canvas.height});
+      }
+
+      /**
+      * @param {CanvasRenderingContext2D} ctx
+      * @param signal
+      */
+      function drawBars(ctx, {frequencies, canvas}) {
+        const barWidth = (canvas.width / frequencies.length);
+
+        for (let i = 0; i < frequencies.length; i++) {
+          const r = frequencies.length - (1 + i);
+          drawRect(ctx, color2, {
+            x: i * barWidth,
+            y: canvas.height - frequencies[r],
+            w: barWidth - 4,
+            h: frequencies[r]
+          });
+          drawRect(ctx, color1, {
+            x: i * barWidth,
+            y: canvas.height - frequencies[i],
+            w: barWidth - 4,
+            h: frequencies[i]
+          });
+          drawRect(ctx, color2, {
+            x: i * barWidth,
+            y: 0,
+            w: barWidth - 4,
+            h: frequencies[r]
+          });
+          drawRect(ctx, color1, {
+            x: i * barWidth,
+            y: 0,
+            w: barWidth - 4,
+            h: frequencies[i]
+          });
+        }
+      }
+
+      /**
+      * @param {CanvasRenderingContext2D} ctx
+      * @param signal
+      */
+      function drawTitle(ctx, {avg, canvas}) {
+        const x = canvas.width / 2;
+        const y = canvas.height / 2;
+        const fontSize = 150 - avg;
+
+        ctx.font = `400 ${fontSize}px ${textFont}`;
+        ctx.fillStyle = textColor;
+        ctx.shadowColor = color1;
+        ctx.shadowBlur = 20;
+        ctx.fillText(title, x, y);
+
+        // reset shadows
+        ctx.shadowBlur = 0;
+        ctx.shadowColor = "transparent";
+      }
+
+      /**
+      * @param {CanvasRenderingContext2D} ctx
+      * @param signal
+      */
+      function drawCircle(ctx, {bass, canvas}) {
+        const x = canvas.width / 2;
+        const y = canvas.height / 2;
+        const radius = 2 * bass + 48;
+
+        ctx.fillStyle = color2;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, 2 * Math.PI)
+        ctx.fill();
+      }
+
+      function draw() {
+        const frequencies = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(frequencies);
+        const avg = Math.ceil(frequencies.reduce(sum) / frequencies.length);
+
+        const bassFrequencies = new Uint8Array(filterAnalyser.frequencyBinCount);
+        filterAnalyser.getByteFrequencyData(bassFrequencies);
+        const bass = Math.ceil(bassFrequencies.reduce(sum) / bassFrequencies.filter(Boolean).length);
+
+        const signal = {frequencies, avg, bass, canvas: {width: canvas.width, height: canvas.height}};
+
+        drawBackground(canvasCtx, signal);
+        drawCircle(canvasCtx, signal);
+        drawBars(canvasCtx, signal);
+        drawTitle(canvasCtx, signal);
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    }
+
+    function setStyles(style, query) {
+      if (query.has("c1")) style.setProperty("--primary-color", query.get("c1"));
+      if (query.has("c2")) style.setProperty("--secondary-color", query.get("c2"));
+      if (query.has("tc")) style.setProperty("--text-color", query.get("tc"));
+      if (query.has("bg")) style.setProperty("--background-color", query.get("bg"));
+    }
+</script>
