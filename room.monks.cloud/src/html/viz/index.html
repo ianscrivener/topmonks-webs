@@ -3,6 +3,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Visualizer</title>
 <style>
+    @font-face {
+        font-family: "Sixtyfour";
+        src: local("Trickster"), url("/assets/css/Sixtyfour.woff2") format("woff2");
+        font-style: normal;
+    }
+
     :root {
         --background-color: #000;
         --text-color: #fff;
@@ -27,26 +33,24 @@
         height: auto;
     }
 </style>
-<pre id="logger">Hello OBS!</pre>
+<pre id="logger"></pre>
 <canvas id="canvas" width=1280 height=720></canvas>
 <script type="module">
+    var logger = document.getElementById("logger");
+
+    function log(text) {
+        logger.textContent = text;
+    }
+
     var query = new URLSearchParams(location.search);
 
     if (query.has("debug")) {
-        var logger = document.getElementById("logger");
-        if (!navigator.mediaDevices) {
-            logger.textContent = "No mediaDevices support";
-        } else {
-            var sources = await navigator.mediaDevices.enumerateDevices();
-            logger.textContent = sources
-                .filter(x => x.kind === "audioinput")
-                .map(x => `${x.label}: ${x.deviceId} - ${x.groupId}`)
-                .join("\n")
-        }
+        await debug();
     } else {
         var title = query.get("title") ?? "MONKSROOM";
+        var audio = query.has("deviceId") ? {deviceId: query.get("deviceId")} : true;
 
-        setStyles(document.body.style, query);
+        setStyles(document.documentElement.style, query);
 
         var canvas = document.getElementById("canvas");
         var canvasCtx = canvas.getContext("2d", {antialias: true});
@@ -56,21 +60,20 @@
         canvasCtx.textRendering = "optimizeSpeed";
         canvasCtx.fontKerning = "normal";
 
-        var stream = await navigator.mediaDevices.getUserMedia({audio: true});
+        var stream = await navigator.mediaDevices.getUserMedia({audio});
         var audioCtx = new AudioContext();
         var mic = audioCtx.createMediaStreamSource(stream);
 
         var analyser = audioCtx.createAnalyser();
         analyser.fftSize = 256;
-
         mic.connect(analyser);
 
+        // bassline
         var filterAnalyser = audioCtx.createAnalyser();
         filterAnalyser.smoothingTimeConstant = 0;
         var filter = audioCtx.createBiquadFilter();
         filter.type = "lowpass";
         filter.frequency.setValueAtTime(80, audioCtx.currentTime);
-
         mic.connect(filter);
         filter.connect(filterAnalyser);
 
@@ -189,16 +192,50 @@
             drawBars(canvasCtx, signal);
             drawTitle(canvasCtx, signal);
 
-          requestAnimationFrame(draw);
+            requestAnimationFrame(draw);
         }
 
-      draw();
+        draw();
     }
 
-    function setStyles(style, query) {
-      if (query.has("c1")) style.setProperty("--primary-color", query.get("c1"));
-      if (query.has("c2")) style.setProperty("--secondary-color", query.get("c2"));
-      if (query.has("tc")) style.setProperty("--text-color", query.get("tc"));
-      if (query.has("bg")) style.setProperty("--background-color", query.get("bg"));
+    var queryToCSSProp = new Map([
+        ["c1", "--primary-color"],
+        ["color1", "--primary-color"],
+        ["c2", "--secondary-color"],
+        ["color2", "--secondary-color"],
+        ["tc", "--text-color"],
+        ["text-color", "--text-color"],
+        ["bg", "--background-color"],
+        ["background-color", "--background-color"],
+    ]);
+
+    function setStyles(style, params) {
+        for (const [param, prop] of queryToCSSProp) {
+            if (params.has(param)) style.setProperty(prop, params.get(param));
+        }
+
+        if (params.has("gfonts")) {
+            const link = document.createElement("link");
+            link.href = `https://fonts.googleapis.com/css2?${new URLSearchParams({
+                family: params.get("gfonts"),
+                display: "swap"
+            })}`;
+            link.rel = "stylesheet";
+            document.head.appendChild(link);
+        }
+    }
+
+    async function debug() {
+        if (!navigator.mediaDevices) {
+            log("No mediaDevices support");
+        } else {
+            var sources = await navigator.mediaDevices.enumerateDevices();
+            log(
+                sources
+                    .filter(x => x.kind === "audioinput")
+                    .map(x => `${x.label}: ${x.deviceId} - ${x.groupId}`)
+                    .join("\n")
+            );
+        }
     }
 </script>
