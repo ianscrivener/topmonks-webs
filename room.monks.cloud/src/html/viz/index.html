@@ -66,14 +66,15 @@
 
         var analyser = audioCtx.createAnalyser();
         analyser.fftSize = 256;
+
         mic.connect(analyser);
 
-        // bassline
         var filterAnalyser = audioCtx.createAnalyser();
         filterAnalyser.smoothingTimeConstant = 0;
         var filter = audioCtx.createBiquadFilter();
         filter.type = "lowpass";
         filter.frequency.setValueAtTime(80, audioCtx.currentTime);
+
         mic.connect(filter);
         filter.connect(filterAnalyser);
 
@@ -198,44 +199,45 @@
         draw();
     }
 
-    var queryToCSSProp = new Map([
-        ["c1", "--primary-color"],
-        ["color1", "--primary-color"],
-        ["c2", "--secondary-color"],
-        ["color2", "--secondary-color"],
-        ["tc", "--text-color"],
-        ["text-color", "--text-color"],
-        ["bg", "--background-color"],
-        ["background-color", "--background-color"],
-    ]);
 
     function setStyles(style, params) {
-        for (const [param, prop] of queryToCSSProp) {
-            if (params.has(param)) style.setProperty(prop, params.get(param));
-        }
+        const queryToCSSProp = new Map([
+            ["c1", "--primary-color"],
+            ["color1", "--primary-color"],
+            ["c2", "--secondary-color"],
+            ["color2", "--secondary-color"],
+            ["tc", "--text-color"],
+            ["text-color", "--text-color"],
+            ["bg", "--background-color"],
+            ["background-color", "--background-color"],
+        ]);
 
-        if (params.has("gfonts")) {
-            const link = document.createElement("link");
-            link.href = `https://fonts.googleapis.com/css2?${new URLSearchParams({
-                family: params.get("gfonts"),
-                display: "swap"
-            })}`;
-            link.rel = "stylesheet";
-            document.head.appendChild(link);
-        }
+      for (const [param, prop] of queryToCSSProp) {
+        if (params.has(param)) style.setProperty(prop, params.get(param));
+      }
+
+      if (params.has("gfonts")) {
+        const link = document.createElement("link");
+        link.href = `https://fonts.googleapis.com/css2?${new URLSearchParams({
+          family: params.get("gfonts"),
+          display: "swap"
+        })}`;
+        link.rel = "stylesheet";
+        document.head.appendChild(link);
+      }
     }
 
     async function debug() {
-        if (!navigator.mediaDevices) {
-            log("No mediaDevices support");
-        } else {
-            var sources = await navigator.mediaDevices.enumerateDevices();
-            log(
-                sources
+      if (!navigator.mediaDevices) {
+        log("No mediaDevices support");
+      } else {
+        var sources = await navigator.mediaDevices.enumerateDevices();
+        log(
+          sources
                     .filter(x => x.kind === "audioinput")
                     .map(x => `${x.label}: ${x.deviceId} - ${x.groupId}`)
                     .join("\n")
-            );
-        }
+        );
+      }
     }
 </script>
