@@ -18,6 +18,12 @@
         --text-font: "Sixtyfour", sans-serif;
     }
 
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
     body {
         background-color: var(--background-color);
         color: var(--text-color);
@@ -29,7 +35,7 @@
     }
 
     #canvas {
-        width: calc(100vw - 16px);
+        width: 100vw;
         height: auto;
     }
 </style>
@@ -47,158 +53,163 @@
     if (query.has("debug")) {
         await debug();
     } else {
-        var title = query.get("title") ?? "MONKSROOM";
-        var audio = query.has("deviceId") ? {deviceId: query.get("deviceId")} : true;
+        logger.style.display = "none";
+    }
+    var title = query.get("t") ?? query.get("title") ?? "MONKSROOM";
+    var audio = query.has("deviceId") ? {deviceId: query.get("deviceId")} : true;
 
-        setStyles(document.documentElement.style, query);
+    setStyles(document.documentElement.style, query);
 
-        var canvas = document.getElementById("canvas");
-        var canvasCtx = canvas.getContext("2d", {antialias: true});
-        canvasCtx.globalCompositeOperation = "source-over";
-        canvasCtx.textAlign = "center";
-        canvasCtx.textBaseline = "middle";
-        canvasCtx.textRendering = "optimizeSpeed";
-        canvasCtx.fontKerning = "normal";
+    var canvas = document.getElementById("canvas");
+    var canvasCtx = canvas.getContext("2d", {antialias: true});
+    canvasCtx.globalCompositeOperation = "source-over";
+    canvasCtx.textAlign = "center";
+    canvasCtx.textBaseline = "middle";
+    canvasCtx.textRendering = "optimizeSpeed";
+    canvasCtx.fontKerning = "normal";
 
-        var stream = await navigator.mediaDevices.getUserMedia({audio});
-        var audioCtx = new AudioContext();
-        var mic = audioCtx.createMediaStreamSource(stream);
+    var stream = await navigator.mediaDevices.getUserMedia({audio});
+    var audioCtx = new AudioContext();
+    var mic = audioCtx.createMediaStreamSource(stream);
 
-        var analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 256;
+    var analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 256;
 
-        mic.connect(analyser);
+    mic.connect(analyser);
 
-        var filterAnalyser = audioCtx.createAnalyser();
-        filterAnalyser.smoothingTimeConstant = 0;
-        var filter = audioCtx.createBiquadFilter();
-        filter.type = "lowpass";
-        filter.frequency.setValueAtTime(80, audioCtx.currentTime);
+    var filterAnalyser = audioCtx.createAnalyser();
+    filterAnalyser.smoothingTimeConstant = 0;
+    var filter = audioCtx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(80, audioCtx.currentTime);
 
-        mic.connect(filter);
-        filter.connect(filterAnalyser);
+    mic.connect(filter);
+    filter.connect(filterAnalyser);
 
-        var canvasStyle = getComputedStyle(canvas);
+    var style = getCustomStyle(canvas);
+    var sum = (a, b) => a + b;
 
-        var bgColor = canvasStyle.getPropertyValue("--background-color");
-        var textColor = canvasStyle.getPropertyValue("--text-color");
-        var textFont = canvasStyle.getPropertyValue("--text-font");
-        var color1 = canvasStyle.getPropertyValue("--primary-color");
-        var color2 = canvasStyle.getPropertyValue("--secondary-color");
-
-        var sum = (a, b) => a + b;
-
-        /**
-         * @param {CanvasRenderingContext2D} ctx
-         * @param {string|CanvasGradient|CanvasPattern} style
-         * @param rect
-         */
-        function drawRect(ctx, style, {x, y, w, h}) {
-            ctx.fillStyle = style;
-            ctx.fillRect(x, y, w, h);
-        }
-
-        /**
-         * @param {CanvasRenderingContext2D} ctx
-         * @param signal
-         */
-        function drawBackground(ctx, {canvas}) {
-            drawRect(ctx, bgColor, {x: 0, y: 0, w: canvas.width, h: canvas.height});
-        }
-
-        /**
-         * @param {CanvasRenderingContext2D} ctx
-         * @param signal
-         */
-        function drawBars(ctx, {frequencies, canvas}) {
-            const barWidth = (canvas.width / frequencies.length);
-
-            for (let i = 0; i < frequencies.length; i++) {
-                const r = frequencies.length - (1 + i);
-                drawRect(ctx, color2, {
-                    x: i * barWidth,
-                    y: canvas.height - frequencies[r],
-                    w: barWidth - 4,
-                    h: frequencies[r]
-                });
-                drawRect(ctx, color1, {
-                    x: i * barWidth,
-                    y: canvas.height - frequencies[i],
-                    w: barWidth - 4,
-                    h: frequencies[i]
-                });
-                drawRect(ctx, color2, {
-                    x: i * barWidth,
-                    y: 0,
-                    w: barWidth - 4,
-                    h: frequencies[r]
-                });
-                drawRect(ctx, color1, {
-                    x: i * barWidth,
-                    y: 0,
-                    w: barWidth - 4,
-                    h: frequencies[i]
-                });
-            }
-        }
-
-        /**
-         * @param {CanvasRenderingContext2D} ctx
-         * @param signal
-         */
-        function drawTitle(ctx, {avg, canvas}) {
-            const x = canvas.width / 2;
-            const y = canvas.height / 2;
-            const fontSize = 150 - avg;
-
-            ctx.font = `400 ${fontSize}px ${textFont}`;
-            ctx.fillStyle = textColor;
-            ctx.shadowColor = color1;
-            ctx.shadowBlur = 20;
-            ctx.fillText(title, x, y);
-
-            // reset shadows
-            ctx.shadowBlur = 0;
-            ctx.shadowColor = "transparent";
-        }
-
-        /**
-         * @param {CanvasRenderingContext2D} ctx
-         * @param signal
-         */
-        function drawCircle(ctx, {bass, canvas}) {
-            const x = canvas.width / 2;
-            const y = canvas.height / 2;
-            const radius = 2 * bass + 48;
-
-            ctx.fillStyle = color2;
-            ctx.beginPath();
-            ctx.arc(x, y, radius, 0, 2 * Math.PI)
-            ctx.fill();
-        }
-
-        function draw() {
-            const frequencies = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(frequencies);
-            const avg = Math.ceil(frequencies.reduce(sum) / frequencies.length);
-
-            const bassFrequencies = new Uint8Array(filterAnalyser.frequencyBinCount);
-            filterAnalyser.getByteFrequencyData(bassFrequencies);
-            const bass = Math.ceil(bassFrequencies.reduce(sum) / bassFrequencies.filter(Boolean).length);
-
-            const signal = {frequencies, avg, bass, canvas: {width: canvas.width, height: canvas.height}};
-
-            drawBackground(canvasCtx, signal);
-            drawCircle(canvasCtx, signal);
-            drawBars(canvasCtx, signal);
-            drawTitle(canvasCtx, signal);
-
-            requestAnimationFrame(draw);
-        }
-
-        draw();
+    /**
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {string|CanvasGradient|CanvasPattern} style
+     * @param rect
+     */
+    function drawRect(ctx, style, {x, y, w, h}) {
+        ctx.fillStyle = style;
+        ctx.fillRect(x, y, w, h);
     }
 
+    /**
+     * @param {CanvasRenderingContext2D} ctx
+     * @param signal
+     */
+    function drawBackground(ctx, {canvas, style}) {
+        drawRect(ctx, style.bgColor, {x: 0, y: 0, w: canvas.width, h: canvas.height});
+    }
+
+    /**
+     * @param {CanvasRenderingContext2D} ctx
+     * @param signal
+     */
+    function drawBars(ctx, {frequencies, canvas, style}) {
+        const barWidth = (canvas.width / frequencies.length);
+
+        for (let i = 0; i < frequencies.length; i++) {
+            const r = frequencies.length - (1 + i);
+            drawRect(ctx, style.color2, {
+                x: i * barWidth,
+                y: canvas.height - frequencies[r],
+                w: barWidth - 4,
+                h: frequencies[r]
+            });
+            drawRect(ctx, style.color1, {
+                x: i * barWidth,
+                y: canvas.height - frequencies[i],
+                w: barWidth - 4,
+                h: frequencies[i]
+            });
+            drawRect(ctx, style.color2, {
+                x: i * barWidth,
+                y: 0,
+                w: barWidth - 4,
+                h: frequencies[r]
+            });
+            drawRect(ctx, style.color1, {
+                x: i * barWidth,
+                y: 0,
+                w: barWidth - 4,
+                h: frequencies[i]
+            });
+        }
+    }
+
+    /**
+     * @param {CanvasRenderingContext2D} ctx
+     * @param signal
+     */
+    function drawTitle(ctx, {avg, canvas, style, title}) {
+        const x = canvas.width / 2;
+        const y = canvas.height / 2;
+        const fontSize = 150 - avg;
+
+        ctx.font = `400 ${fontSize}px ${style.textFont}`;
+        ctx.fillStyle = style.textColor;
+        ctx.shadowColor = style.color1;
+        ctx.shadowBlur = 20;
+        ctx.fillText(title, x, y);
+
+        // reset shadows
+        ctx.shadowBlur = 0;
+        ctx.shadowColor = "transparent";
+    }
+
+    /**
+     * @param {CanvasRenderingContext2D} ctx
+     * @param signal
+     */
+    function drawCircle(ctx, {bass, canvas, style}) {
+        const x = canvas.width / 2;
+        const y = canvas.height / 2;
+        const radius = 2 * bass + 48;
+
+        ctx.fillStyle = style.color2;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, 2 * Math.PI)
+        ctx.fill();
+    }
+
+    function draw() {
+        const frequencies = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(frequencies);
+        const avg = Math.ceil(frequencies.reduce(sum) / frequencies.length);
+
+        const bassFrequencies = new Uint8Array(filterAnalyser.frequencyBinCount);
+        filterAnalyser.getByteFrequencyData(bassFrequencies);
+        const bass = Math.ceil(bassFrequencies.reduce(sum) / bassFrequencies.filter(Boolean).length);
+
+        const signal = {frequencies, avg, bass, canvas: {width: canvas.width, height: canvas.height}, title, style};
+
+        drawBackground(canvasCtx, signal);
+        drawCircle(canvasCtx, signal);
+        drawBars(canvasCtx, signal);
+        drawTitle(canvasCtx, signal);
+
+        requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    function getCustomStyle(el) {
+        var style = getComputedStyle(el);
+
+        var bgColor = style.getPropertyValue("--background-color");
+        var textColor = style.getPropertyValue("--text-color");
+        var textFont = style.getPropertyValue("--text-font");
+        var color1 = style.getPropertyValue("--primary-color");
+        var color2 = style.getPropertyValue("--secondary-color");
+
+        return {bgColor, textColor, textFont, color1, color2};
+    }
 
     function setStyles(style, params) {
         const queryToCSSProp = new Map([
@@ -212,32 +223,32 @@
             ["background-color", "--background-color"],
         ]);
 
-      for (const [param, prop] of queryToCSSProp) {
-        if (params.has(param)) style.setProperty(prop, params.get(param));
-      }
+        for (const [param, prop] of queryToCSSProp) {
+            if (params.has(param)) style.setProperty(prop, params.get(param));
+        }
 
-      if (params.has("gfonts")) {
-        const link = document.createElement("link");
-        link.href = `https://fonts.googleapis.com/css2?${new URLSearchParams({
-          family: params.get("gfonts"),
-          display: "swap"
-        })}`;
-        link.rel = "stylesheet";
-        document.head.appendChild(link);
-      }
+        if (params.has("gfonts")) {
+            const link = document.createElement("link");
+            link.href = `https://fonts.googleapis.com/css2?${new URLSearchParams({
+                family: params.get("gfonts"),
+                display: "swap"
+            })}`;
+            link.rel = "stylesheet";
+            document.head.appendChild(link);
+        }
     }
 
     async function debug() {
-      if (!navigator.mediaDevices) {
-        log("No mediaDevices support");
-      } else {
-        var sources = await navigator.mediaDevices.enumerateDevices();
-        log(
-          sources
+        if (!navigator.mediaDevices) {
+            log("No mediaDevices support");
+        } else {
+            var sources = await navigator.mediaDevices.enumerateDevices();
+            log(
+                sources
                     .filter(x => x.kind === "audioinput")
                     .map(x => `${x.label}: ${x.deviceId} - ${x.groupId}`)
                     .join("\n")
-        );
-      }
+            );
+        }
     }
 </script>
