@@ -278,7 +278,7 @@ workflows:
           site_name: www.topmonks.cz
           context: org-global
           requires:
-            - provision
+            - build
             # - test-www-topmonks-cz
           filters:
             branches:
