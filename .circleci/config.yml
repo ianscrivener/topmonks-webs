@@ -230,8 +230,8 @@ workflows:
           site_name: www.topmonks.com
           context: org-global
           requires:
-            #  - provision
-            - test-www-topmonks-com
+            - build
+            # - test-www-topmonks-com
           filters:
             branches:
               only: trunk
