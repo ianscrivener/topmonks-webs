@@ -8,5 +8,3 @@ github:
 linkedin:
 quote:
 ---
-
-Just tell us something we don't know
