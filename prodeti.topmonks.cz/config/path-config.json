@@ -1,5 +1,6 @@
 {
   "src": "./prodeti.topmonks.cz/src",
+  "sharedSrc": "./shared/src",
   "dest": "./public/prodeti.topmonks.cz",
   "html": {
     "src": "html",
