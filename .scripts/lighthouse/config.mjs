@@ -4,10 +4,10 @@ export default {
 
   // 3. Add custom audit to the list of audits 'lighthouse:default' will run.
   audits: [
-    "cloudinary-auto-format-audit",
-    "cloudinary-auto-quality-audit",
-    "cloudinary-dpr-audit",
-    "cloudinary-width-audit"
+    "cloudinary-auto-format-audit.mjs",
+    "cloudinary-auto-quality-audit.mjs",
+    "cloudinary-dpr-audit.mjs",
+    "cloudinary-width-audit.mjs"
   ],
 
   categories: {
