@@ -1750,16 +1750,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grpc/grpc-js@npm:^1.2.7":
-  version: 1.3.2
-  resolution: "@grpc/grpc-js@npm:1.3.2"
-  dependencies:
-    "@types/node": ">=12.12.47"
-  checksum: 844b47940324e9a1c27efe23e5c4f055ed51261f1f9c43b3483ec2b47e7ff4b956abfd76cf1434f275fe4efd1e91c4338bcf3074d79406baff7a2cdfdcbb02de
-  languageName: node
-  linkType: hard
-
-"@grpc/grpc-js@npm:^1.3.8":
+"@grpc/grpc-js@npm:1.8.14":
   version: 1.8.14
   resolution: "@grpc/grpc-js@npm:1.8.14"
   dependencies:
@@ -2980,7 +2971,7 @@ __metadata:
     "@thi.ng/atom": ^5.2.1
     "@topmonks/blendid": "https://github.com/topmonks/blendid.git#commit=5d5336f952358887dfc9fb1306e6d3238ea8609b"
     "@topmonks/pulumi-aws": ^3.0.0
-    "@types/node": ^16.18.26
+    "@types/node": ^18.16.5
     ava: ^5.2.0
     chalk: ^5.2.0
     cheerio: ^1.0.0-rc.12
@@ -2993,12 +2984,11 @@ __metadata:
     eslint-plugin-lit: ^1.8.3
     eslint-plugin-prettier: ^4.2.1
     eslint-plugin-promise: ^6.1.1
-    esm: ^3.2.25
     lighthouse: ^10.2.0
     lighthouse-logger: ^1.3.0
     lit-html: 2.7.3
     local-web-server: ^5.3.0
-    lodash: ^4.17.21
+    lodash-es: 4.17.21
     lws: ^4.1.2
     lws-basic-auth: ^2.0.0
     lws-blacklist: ^3.0.0
@@ -3134,10 +3124,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^16.18.26":
-  version: 16.18.26
-  resolution: "@types/node@npm:16.18.26"
-  checksum: 2a746b3f9e97e00aa5d1d8cce36c5b75d5504df15e82647ad1fadbc3435ea4491203d044bbaa595edc2ab25a9ab820793f9d38dba753ad150929335fa21e24d4
+"@types/node@npm:^18.16.5":
+  version: 18.16.5
+  resolution: "@types/node@npm:18.16.5"
+  checksum: b6df96a76a7655cd944794197cf63f5269e5034041bc355f4f243cb3f185ad3e1948011b6f0ac66c22434e50bc53a20ec3a9d95ad284f0e3819813d309d1650b
   languageName: node
   linkType: hard
 
@@ -4734,9 +4724,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:3.5.2":
-  version: 3.5.2
-  resolution: "chokidar@npm:3.5.2"
+"chokidar@npm:3.5.3":
+  version: 3.5.3
+  resolution: "chokidar@npm:3.5.3"
   dependencies:
     anymatch: ~3.1.2
     braces: ~3.0.2
@@ -4749,7 +4739,7 @@ __metadata:
   dependenciesMeta:
     fsevents:
       optional: true
-  checksum: d1fda32fcd67d9f6170a8468ad2630a3c6194949c9db3f6a91b16478c328b2800f433fb5d2592511b6cb145a47c013ea1cce60b432b1a001ae3ee978a8bffc2d
+  checksum: b49fcde40176ba007ff361b198a2d35df60d9bb2a5aab228279eb810feae9294a6b4649ab15981304447afe1e6ffbf4788ad5db77235dc770ab777c6e771980c
   languageName: node
   linkType: hard
 
@@ -5757,15 +5747,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4.3.1":
-  version: 4.3.1
-  resolution: "debug@npm:4.3.1"
+"debug@npm:4.3.4":
+  version: 4.3.4
+  resolution: "debug@npm:4.3.4"
   dependencies:
     ms: 2.1.2
   peerDependenciesMeta:
     supports-color:
       optional: true
-  checksum: 2c3352e37d5c46b0d203317cd45ea0e26b2c99f2d9dfec8b128e6ceba90dfb65425f5331bf3020fe9929d7da8c16758e737f4f3bfc0fce6b8b3d503bae03298b
+  checksum: 3dbad3f94ea64f34431a9cbf0bafb61853eda57bff2880036153438f50fb5a84f27683ba0d8e5426bf41a8c6ff03879488120cf5b3a761e77953169c0600a708
   languageName: node
   linkType: hard
 
@@ -6871,13 +6861,6 @@ __metadata:
   bin:
     eslint: bin/eslint.js
   checksum: b79eba37f52f517a420eec99a80ae9f284d2cbe73afc0d4d3d4d5ed1cce0b06f21badc0374bfb7ac239efd2d49a1fd7c6111d6c3d52888521f377ba33de77e61
-  languageName: node
-  linkType: hard
-
-"esm@npm:^3.2.25":
-  version: 3.2.25
-  resolution: "esm@npm:3.2.25"
-  checksum: 978aabe2de83541c105605a6d60a26ed8e627ef6bb0a7605fe15a95bbdea6b8348bd045255cb22219c054dd09a81a94823df00843d9e97f42419c92015ce3a64
   languageName: node
   linkType: hard
 

@@ -1,6 +1,6 @@
-const path = require("path");
-const fs = require("fs");
-const ApiClient = require("@lhci/utils/src/api-client.js");
+import fs from "node:fs";
+import path from "node:path";
+import ApiClient from "@lhci/utils/src/api-client.js";
 
 async function generateLighthouseToken(name) {
   const config = path.resolve("./lighthouserc.json");
@@ -37,4 +37,10 @@ async function addLhciTokens() {
   );
 }
 
-addLhciTokens().catch(ex => console.error(ex));
+try {
+  await addLhciTokens()
+}
+catch (err) {
+  console.error(err);
+  process.exit(1);
+}

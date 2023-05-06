@@ -1,11 +1,12 @@
-require("dotenv").config();
-const commander = require("commander");
-const chalk = require("chalk");
-const fs = require("fs");
-const path = require("path");
-const YAML = require("yaml");
-const { strOptions } = require("yaml/types");
-const ApiClient = require("@lhci/utils/src/api-client.js");
+import fs from "node:fs";
+import path from "node:path";
+import { config } from "dotenv";
+import commander from "commander";
+import chalk from "chalk";
+import YAML from "yaml";
+import ApiClient from "@lhci/utils/src/api-client.js";
+
+config();
 
 const templateDir = path.resolve(".scripts/create-site");
 const VERSION = "0.0.1";
@@ -268,8 +269,7 @@ function addSiteToCI(name) {
     const yamlData = YAML.parseDocument(data);
     yamlData.addIn(["workflows", "build_and_deploy", "jobs"], testJob);
     yamlData.addIn(["workflows", "build_and_deploy", "jobs"], deployJob);
-    strOptions.fold.lineWidth = 0;
-    return fs.promises.writeFile(filePath, yamlData.toString(), "utf-8");
+    return fs.promises.writeFile(filePath, yamlData.toString({lineWidth:0}), "utf-8");
   });
 }
 

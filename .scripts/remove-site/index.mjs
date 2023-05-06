@@ -1,11 +1,10 @@
-const commander = require("commander");
-const chalk = require("chalk");
-const fs = require("fs");
-const { pull } = require("lodash");
-const path = require("path");
-const rimraf = require("rimraf");
-const YAML = require("yaml");
-const { strOptions } = require("yaml/types");
+import fs from "node:fs";
+import path from "node:path";
+import commander from "commander";
+import chalk from "chalk";
+import { pull } from "lodash-es";
+import rimraf from "rimraf";
+import YAML from "yaml";
 
 const VERSION = "0.0.1";
 
@@ -130,8 +129,7 @@ function removeSiteFromCI(name) {
       .filter(x => x.has("deploy_site") || x.has("test_site"))
       .filter(x => x.items[0].value.get("site_name") === name);
     pull(jobs.items, ...siteJobs);
-    strOptions.fold.lineWidth = 0;
-    return fs.promises.writeFile(filePath, yamlData.toString(), "utf-8");
+    return fs.promises.writeFile(filePath, yamlData.toString({ lineWidth: 0 }), "utf-8");
   });
 }
 

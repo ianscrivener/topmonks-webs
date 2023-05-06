@@ -2,8 +2,8 @@ import * as cheerio from "cheerio";
 import fetch from "node-fetch";
 import { response, notFound, withCORS } from "../http.mjs";
 
-/** @typedef { import("@pulumi/awsx/apigateway").Request } APIGatewayProxyEvent */
-/** @typedef { import("@pulumi/awsx/apigateway").Response } APIGatewayProxyResult */
+/** @typedef { import("@pulumi/awsx/classic/apigateway").Request } APIGatewayProxyEvent */
+/** @typedef { import("@pulumi/awsx/classic/apigateway").Response } APIGatewayProxyResult */
 
 /**
  * @param {APIGatewayProxyEvent} event
