@@ -1,5 +1,6 @@
 {
   "src": "./caffe.topmonks.cz/src",
+  "sharedSrc": "./shared/src",
   "dest": "./public/caffe.topmonks.cz",
 
   "html": {

@@ -1,5 +1,6 @@
 {
   "src": "./room.monks.cloud/src",
+  "sharedSrc": "./shared/src",
   "dest": "./public/room.monks.cloud",
 
   "html": {

@@ -1,5 +1,6 @@
 {
   "src": "./monkslab.cz/src",
+  "sharedSrc": "./shared/src",
   "dest": "./public/monkslab.cz",
 
   "html": {

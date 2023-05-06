@@ -1,5 +1,6 @@
 {
   "src": "./meetvers.io/src",
+  "sharedSrc": "./shared/src",
   "dest": "./public/meetvers.io",
 
   "html": {

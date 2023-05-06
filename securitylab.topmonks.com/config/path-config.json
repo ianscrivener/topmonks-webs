@@ -1,5 +1,6 @@
 {
   "src": "./securitylab.topmonks.com/src",
+  "sharedSrc": "./shared/src",
   "dest": "./public/securitylab.topmonks.com",
 
   "html": {

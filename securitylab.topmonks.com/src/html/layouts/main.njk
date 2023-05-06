@@ -31,11 +31,11 @@
   {% block head %}{% endblock %}
 </head>
 <body id="page-{{page}}">
-{% include "../components/header.njk" %}
+{% include "shared/header.njk" %}
 <main>
   {% block content %}{% endblock %}
 </main>
-{% include '../components/footer.njk' %}
+{% include "shared/footer.njk" %}
 
 {{ spriteTarget() }}
 

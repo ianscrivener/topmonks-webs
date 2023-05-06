@@ -1,7 +1,7 @@
-const createSharedTaskConfig = require("../../shared/config/createSharedTaskConfig");
-const pathConfig = require("./path-config.json");
+import pathConfig from "./path-config.json" assert { type: "json" };
+import { withShared } from "../../shared/config/index.mjs";
 
-const config = createSharedTaskConfig(__dirname, {
+export default withShared({
   images: true,
   icons: true,
   cloudinary: true,
@@ -11,6 +11,7 @@ const config = createSharedTaskConfig(__dirname, {
   javascripts: false,
   stylesheets: true,
   workboxBuild: false,
+
   html: {
     collections: []
   },
@@ -24,6 +25,4 @@ const config = createSharedTaskConfig(__dirname, {
   production: {
     rev: true
   }
-});
-
-module.exports = config;
+}, pathConfig);

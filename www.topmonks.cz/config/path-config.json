@@ -1,5 +1,6 @@
 {
   "src": "./www.topmonks.cz/src",
+  "sharedSrc": "./shared/src",
   "dest": "./public/www.topmonks.cz",
 
   "html": {
@@ -8,8 +9,7 @@
   },
 
   "data": {
-    "src": "data",
-    "team": "./www.topmonks.com/src/data/team",
+    "src": "../../www.topmonks.com/src/data",
     "dest": "./data/"
   },
 

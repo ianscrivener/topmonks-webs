@@ -1,5 +1,6 @@
 {
   "src": "./studio.topmonks.com/src",
+  "sharedSrc": "./shared/src",
   "dest": "./public/studio.topmonks.com",
 
   "html": {

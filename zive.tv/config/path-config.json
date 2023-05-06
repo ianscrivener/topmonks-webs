@@ -1,5 +1,6 @@
 {
   "src": "./zive.tv/src",
+  "sharedSrc": "./shared/src",
   "dest": "./public/zive.tv",
 
   "html": {

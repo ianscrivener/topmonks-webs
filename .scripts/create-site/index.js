@@ -47,11 +47,11 @@ const generatedDirectories = [
 ];
 
 const generatedFiles = [
-  "config/task-config.js",
+  "config/task-config.mjs",
   "config/path-config.json",
   "src/data/global.json",
   "src/html/index.html",
-  "src/javascripts/index.js",
+  "src/esm/index.js",
   "src/stylesheets/main.scss"
 ];
 
@@ -187,7 +187,7 @@ async function createPackageJsonScripts(name) {
   ] = `BLENDID_CONFIG_PATH=./${name}/config/ dotenv blendid`;
   packageConfig.scripts[
     `build:${name}`
-  ] = `BLENDID_CONFIG_PATH=./${name}/config/ dotenv blendid -- build`;
+  ] = `BLENDID_CONFIG_PATH=./${name}/config/ dotenv blendid -- build  --production`;
 
   return fs.promises.writeFile(
     packageJsonPath,

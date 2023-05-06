@@ -1,5 +1,6 @@
 {
   "src": "./%APP_DIR_NAME%/src",
+  "sharedSrc": "./src/shared",
   "dest": "./public/%APP_DIR_NAME%",
 
   "html": {
@@ -38,7 +39,7 @@
 
   "fonts": {
     "src": "fonts",
-    "dest": "fonts"
+    "dest": "assets/css"
   },
 
   "icons": {

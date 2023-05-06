@@ -1,5 +1,6 @@
 {
   "src": "./cbx.cz/src",
+  "sharedSrc": "./shared/src",
   "dest": "./public/cbx.cz",
 
   "html": {

@@ -1,5 +1,6 @@
 {
   "src": "./arx.monks.cloud/src",
+  "sharedSrc": "./shared/src",
   "dest": "./public/arx.monks.cloud",
 
   "html": {

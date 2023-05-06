@@ -1,5 +1,6 @@
 {
   "src": "./www.hookamonk.com/src",
+  "sharedSrc": "./shared/src",
   "dest": "./public/www.hookamonk.com",
 
   "html": {
