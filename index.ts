@@ -3,8 +3,9 @@ import * as pulumi from "@pulumi/pulumi";
 import {
   registerAutoTags,
   createCertificate,
-  AssetsCachingLambda,
-  SecurityHeadersLambda,
+  createCacheBoostingPolicy,
+  createSecurityHeadersAndPermissionsPolicy,
+  CloudFront,
   Website
 } from "@topmonks/pulumi-aws";
 import * as arx from "./arx.monks.cloud/infra";
@@ -28,23 +29,29 @@ createCertificate("www.ingridapp.io");
 createCertificate("monks.cloud");
 createCertificate("www.zive.tv");
 
-const assetsCachingLambda = AssetsCachingLambda.create("topmonks-webs-caching");
-const securityHeadersLambda = SecurityHeadersLambda.create(
-  "topmonks-webs-security"
-);
-
-export const assetsCachingLambdaArn = assetsCachingLambda.arn;
-export const securityHeadersLambdaArn = securityHeadersLambda.arn;
-
 const websites = require("./websites.json");
 export const sites: any = {};
 for (const domain of Object.keys(websites)) {
+  let cacheBoostingPolicy = createCacheBoostingPolicy(domain, {
+    customName: "cache-boosting-" + domain.replace(/\./g, "-"),
+    cookiesConfig: { cookieBehavior: "none" },
+    headersConfig: { headerBehavior: "none" },
+    queryStringsConfig: { queryStringBehavior: "none" }
+  });
+  let securityHeadersPolicy = createSecurityHeadersAndPermissionsPolicy(
+    domain,
+    { customName: "security-headers-" + domain.replace(/\./g, "-") }
+  );
   const website = Website.create(
     domain,
     Object.assign(
       {
-        assetsCachingLambdaArn,
-        securityHeadersLambdaArn
+        assetsCachePolicyId: cacheBoostingPolicy.id,
+        assetResponseHeadersPolicyId:
+          CloudFront.ManagedResponseHeaderPolicy
+            .CORSwithPreflightAndSecurityHeadersPolicy,
+        cachePolicyId: CloudFront.ManagedCachePolicy.CachingOptimized,
+        responseHeadersPolicyId: securityHeadersPolicy.id
       },
       websites[domain]
     )
@@ -62,13 +69,7 @@ export const redirectSites: any = {};
 for (const domain of Object.keys(redirects)) {
   const website = Website.createRedirect(
     domain,
-    Object.assign(
-      {
-        assetsCachingLambdaArn,
-        securityHeadersLambdaArn
-      },
-      redirects[domain]
-    )
+    Object.assign({}, redirects[domain])
   );
   redirectSites[domain] = {
     url: website.url,
