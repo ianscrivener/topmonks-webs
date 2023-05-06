@@ -1,4 +1,4 @@
-import * as awsx from "@pulumi/awsx";
+import * as awsx from "@pulumi/awsx/classic";
 import { startupStudioContactFormLambda } from "../lambdas/contact-form";
 
 export const api = new awsx.apigateway.API("topmonks-webs-api", {

@@ -1,6 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
-import * as awsx from "@pulumi/awsx";
+import * as awsx from "@pulumi/awsx/classic";
 import * as lambdaBuilder from "../../lambda-builder";
 import * as path from "path";
 import { CustomDomainDistribution } from "@topmonks/pulumi-aws/apigateway";

@@ -1,6 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
-import * as awsx from "@pulumi/awsx";
+import * as awsx from "@pulumi/awsx/classic";
 
 const docsTable = new aws.dynamodb.Table("arx-documents", {
   attributes: [{ name: "id", type: "S" }],

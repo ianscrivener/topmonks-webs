@@ -1,4 +1,4 @@
-import * as awsx from "@pulumi/awsx";
+import * as awsx from "@pulumi/awsx/classic";
 import { CustomDomainDistribution } from "@topmonks/pulumi-aws/apigateway";
 import { hookamonkContactFormLambda } from "../lambdas/contact-form";
 
