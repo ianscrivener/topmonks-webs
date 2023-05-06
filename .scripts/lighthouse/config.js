@@ -1,6 +1,4 @@
-"use strict";
-
-module.exports = {
+export default {
   // 1. Run your custom tests along with all the default Lighthouse tests.
   extends: "lighthouse:default",
 

@@ -1,8 +1,6 @@
-"use strict";
+import {Audit} from "lighthouse";
 
-const { Audit } = require("lighthouse");
-
-class CloudinaryDprAudit extends Audit {
+export default class CloudinaryDprAudit extends Audit {
   static get meta() {
     return {
       id: 'cloudinary-dpr-audit',
@@ -32,5 +30,3 @@ class CloudinaryDprAudit extends Audit {
     };
   }
 }
-
-module.exports = CloudinaryDprAudit;

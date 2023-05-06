@@ -1,8 +1,6 @@
-"use strict";
+import {Audit} from "lighthouse";
 
-const { Audit } = require("lighthouse");
-
-class CloudinaryAutoQualityAudit extends Audit {
+export default class CloudinaryAutoQualityAudit extends Audit {
   static get meta() {
     return {
       id: 'cloudinary-auto-quality-audit',
@@ -32,5 +30,3 @@ class CloudinaryAutoQualityAudit extends Audit {
     };
   }
 }
-
-module.exports = CloudinaryAutoQualityAudit;

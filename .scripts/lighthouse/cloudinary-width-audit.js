@@ -1,8 +1,6 @@
-"use strict";
+import {Audit} from "lighthouse";
 
-const { Audit } = require("lighthouse");
-
-class CloudinaryWidthAudit extends Audit {
+export default class CloudinaryWidthAudit extends Audit {
   static get meta() {
     return {
       id: 'cloudinary-width-audit',
@@ -32,5 +30,3 @@ class CloudinaryWidthAudit extends Audit {
     };
   }
 }
-
-module.exports = CloudinaryWidthAudit;
