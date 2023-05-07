@@ -1,13 +1,13 @@
 version: 2.1
 orbs:
-  aws-cli: circleci/aws-cli@2.0.6
+  aws-cli: circleci/aws-cli@3.1.5
   aws-cloudfront: topmonks/aws-cloudfront@1.0.0
-  aws-s3: circleci/aws-s3@3.0.0
+  aws-s3: circleci/aws-s3@3.1.1
   browser-tools: circleci/browser-tools@1.2.4
   docker: circleci/docker@2.0.1
-  github: topmonks/github@1.1.0
-  node: circleci/node@4.9.0
-  pulumi: pulumi/pulumi@2.0.0
+  github: topmonks/github@1.4.0
+  node: circleci/node@5.1.0
+  pulumi: pulumi/pulumi@2.1.0
   swarmpit: topmonks/swarmpit@1.2.0
 
 commands:
@@ -51,12 +51,14 @@ commands:
 
 jobs:
   build:
-    executor:
-      name: node/default
-      tag: 'current'
+    machine:
+      image: ubuntu-2204:2023.02.1
+    resource_class: arm.medium
     working_directory: ~/topmonks-webs
     steps:
       - checkout
+      - node/install
+      - node/install-yarn
       - node/install-packages:
           pkg-manager: yarn-berry
           cache-version: v4
@@ -73,13 +75,17 @@ jobs:
           paths: [ public ]
 
   provision:
-    executor:
-      name: node/default
-      tag: 'current'
+    machine:
+      image: ubuntu-2204:2023.02.1
+    resource_class: arm.medium
+    environment:
+      AWS_STS_REGIONAL_ENDPOINTS: regional
     steps:
       - checkout
       - pulumi/login:
           cloud-url: s3://pulumi.tmcloud.io
+      - node/install
+      - node/install-yarn
       - node/install-packages:
           pkg-manager: yarn-berry
           cache-version: v4
@@ -89,13 +95,17 @@ jobs:
           skip-preview: true
 
   preview-provision:
-    executor:
-      name: node/default
-      tag: 'current'
+    machine:
+      image: ubuntu-2204:2023.02.1
+    resource_class: arm.medium
+    environment:
+      AWS_STS_REGIONAL_ENDPOINTS: regional
     steps:
       - checkout
       - pulumi/login:
           cloud-url: s3://pulumi.tmcloud.io
+      - node/install
+      - node/install-yarn
       - node/install-packages:
           pkg-manager: yarn-berry
           cache-version: v4
@@ -109,21 +119,23 @@ jobs:
         type: string
     executor:
       name: node/default
-      tag: 'current'
+      tag: 'lts-browsers'
     working_directory: ~/topmonks-webs
     steps:
       - checkout
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - attach_workspace:
           at: ~/topmonks-webs
+      - run: |
+          sudo apt-get update
+          sudo apt-get install libnss3-tools
+      - node/install
+      - node/install-yarn
       - node/install-packages:
           pkg-manager: yarn-berry
           cache-version: v4
       - run:
           name: Install self-signed cert for localhost
           command: |
-            sudo apt-get install libnss3-tools
             mkdir -p $HOME/.pki/nssdb
             echo "Cert path: ./node_modules/lws/ssl/lws-cert.pem"
             certutil -N -d $HOME/.pki/nssdb --empty-password
@@ -140,7 +152,8 @@ jobs:
             yarn test:ava
             cat websites.json | jq -rM '.["<< parameters.site_name >>"] | .["lhci"] as $ci | {$ci}' > patch.json
             jq --slurp 'reduce .[] as $item ({}; . * $item)' lighthouserc.json patch.json > .lighthouserc.json
-            yarn lhci autorun --upload.extraHeaders.Authorization="Basic ${LHCI_BASIC_AUTH}" \
+            yarn lhci autorun \
+              --upload.extraHeaders.Authorization="Basic ${LHCI_BASIC_AUTH}" \
               --upload.urlReplacementPatterns="s/^/: << parameters.site_name >>/"
       - store_artifacts:
           path: ./results
@@ -231,7 +244,7 @@ workflows:
           context: org-global
           requires:
             - build
-            # - test-www-topmonks-com
+            - test-www-topmonks-com
           filters:
             branches:
               only: trunk
