@@ -2,10 +2,11 @@
   "ci": {
     "collect": {
       "numberOfRuns": 1,
-      "url": "https://127.0.0.1:8000/",
+      "url": "https://localhost:8000/",
       "puppeteerLaunchOptions": {
+        "headless": true,
         "ignoreHTTPSErrors": true,
-        "args": ["--ignore-certificate-errors"]
+        "args": ["--headless", "--ignore-certificate-errors"]
       },
       "settings": {
         "configPath": ".scripts/lighthouse/config.mjs"
