@@ -3,6 +3,9 @@
     "collect": {
       "numberOfRuns": 1,
       "url": "https://127.0.0.1:8000/",
+      "puppeteerLaunchOptions": {
+        "args": ["--no-sandbox", "--ignore-certificate-errors", "--chrome-flags=--ignore-certificate-errors"]
+      },
       "settings": {
         "configPath": ".scripts/lighthouse/config.mjs"
       }
