@@ -128,6 +128,7 @@ jobs:
       - run: |
           sudo apt-get update
           sudo apt-get install libnss3-tools
+      - browser-tools/install-chrome
       - node/install
       - node/install-yarn
       - node/install-packages:
